@@ -1,0 +1,10 @@
+.idea
+.project
+.settings
+.idea
+*.iml
+work
+log
+*.ts
+*.flv
+*.m3u8
