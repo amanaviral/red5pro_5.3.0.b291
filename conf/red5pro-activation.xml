@@ -17,7 +17,8 @@
         <property name="rtsp" value="true" /> 
         <property name="secondscreen" value="false" /> 
         <property name="websockets" value="true" /> 
-        <property name="rtspPort" value="8554" /> 
+        <!--<property name="rtspPort" value="8554" />-->
+        <property name="rtspPort" value="80" />
         <property name="secondScreenPort" value="8088" /> 
         <property name="websocketPort" value="6262" /> 
         <property name="enableRecording" value="true" /> 
