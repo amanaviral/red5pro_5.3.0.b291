@@ -22,6 +22,7 @@
         Scanner https://tomcat.apache.org/tomcat-8.0-doc/config/jar-scanner.html 
         Filter https://tomcat.apache.org/tomcat-8.0-doc/config/jar-scan-filter.html
     -->
+    <Realm className="org.apache.catalina.realm.MemoryRealm" />
     <JarScanner scanBootstrapClassPath="false" scanClassPath="false">
         <JarScanFilter
             defaultPluggabilityScan="true"
