@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
-    xmlns:lang="http://www.springframework.org/schema/lang" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd">
-    
+
     <!-- DO NOT FORMAT THIS FILE IN ECLIPSE -->
-    
+
     <bean id="customEditorConfigurer" class="org.springframework.beans.factory.config.CustomEditorConfigurer">
         <property name="customEditors">
             <map>
@@ -14,11 +14,11 @@
             </map>
         </property>
     </bean>
-    
+
     <bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:/red5.properties" />
     </bean>
-    
+
     <!-- RTMP -->
     <bean id="rtmpScheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
         <property name="poolSize" value="${rtmp.scheduler.pool_size}" />
@@ -26,24 +26,24 @@
         <property name="waitForTasksToCompleteOnShutdown" value="true" />
         <property name="threadNamePrefix" value="RTMPConnectionScheduler-" />
     </bean>
-    
-<!--
-    <bean id="messageExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-        <property name="corePoolSize" value="${rtmp.executor.core_pool_size}" />
-        <property name="maxPoolSize" value="${rtmp.executor.max_pool_size}" />
-        <property name="queueCapacity" value="${rtmp.executor.queue_capacity}" />
-        <property name="daemon" value="false" />
-        <property name="waitForTasksToCompleteOnShutdown" value="true" />
-        <property name="threadNamePrefix" value="RTMPConnectionExecutor-" />
-    </bean>
-    
-    <bean id="deadlockGuardScheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
-        <property name="poolSize" value="${rtmp.deadlockguard.sheduler.pool_size}" />
-        <property name="daemon" value="false" />
-        <property name="waitForTasksToCompleteOnShutdown" value="true" />
-        <property name="threadNamePrefix" value="DeadlockGuardScheduler-" />
-    </bean>
--->
+
+    <!--
+        <bean id="messageExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+            <property name="corePoolSize" value="${rtmp.executor.core_pool_size}" />
+            <property name="maxPoolSize" value="${rtmp.executor.max_pool_size}" />
+            <property name="queueCapacity" value="${rtmp.executor.queue_capacity}" />
+            <property name="daemon" value="false" />
+            <property name="waitForTasksToCompleteOnShutdown" value="true" />
+            <property name="threadNamePrefix" value="RTMPConnectionExecutor-" />
+        </bean>
+
+        <bean id="deadlockGuardScheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
+            <property name="poolSize" value="${rtmp.deadlockguard.sheduler.pool_size}" />
+            <property name="daemon" value="false" />
+            <property name="waitForTasksToCompleteOnShutdown" value="true" />
+            <property name="threadNamePrefix" value="DeadlockGuardScheduler-" />
+        </bean>
+    -->
 
     <!-- RTMP connection manager -->
     <bean id="rtmpConnManager" class="com.red5pro.server.stream.Red5ProConnManager" />
@@ -64,12 +64,12 @@
         <!-- Enable this to allow unvalidated connections -->
         <property name="unvalidatedConnectionAllowed" value="true" />
     </bean>
-    
+
     <!-- RTMP Mina IO Handler -->
     <bean id="rtmpMinaIoHandler" class="org.red5.server.net.rtmp.RTMPMinaIoHandler">
         <property name="handler" ref="rtmpHandler" />
     </bean>
-    
+
     <!-- RTMP Mina Transport -->
     <bean id="rtmpTransport" class="org.red5.server.net.rtmp.RTMPMinaTransport" init-method="start" destroy-method="stop">
         <property name="ioHandler" ref="rtmpMinaIoHandler" />
@@ -100,15 +100,15 @@
         <property name="enableMinaMonitor" value="${jmx.mina.monitor.enable}" />
         <property name="enableMinaLogFilter" value="${mina.logfilter.enable}" />
     </bean>
-    
+
     <!-- RTMP Mina Connection -->
     <bean id="rtmpMinaConnection" scope="prototype" class="org.red5.server.net.rtmp.RTMPMinaConnection">
         <!-- Executor for scheduled tasks -->
         <property name="scheduler" ref="rtmpScheduler" />
-<!-- 
-        <property name="executor" ref="messageExecutor" />
-        <property name="deadlockGuardScheduler" ref="deadlockGuardScheduler" />
--->
+        <!--
+                <property name="executor" ref="messageExecutor" />
+                <property name="deadlockGuardScheduler" ref="deadlockGuardScheduler" />
+        -->
         <!-- Ping clients every X ms. Set to 0 to disable ghost detection code. -->
         <property name="pingInterval" value="${rtmp.ping_interval}" />
         <!-- Disconnect client after X ms of not responding. -->
@@ -137,13 +137,13 @@
         <property name="reservedStreamsInitalCapacity" value="${rtmp.reserved.streams.initial.capacity}" />
         <property name="reservedStreamsConcurrencyLevel" value="${rtmp.reserved.streams.concurrency.level}" />
     </bean>
-    
+
     <!-- RTMPT -->
     <!-- RTMPT Handler -->
     <bean id="rtmptHandler" class="org.red5.server.net.rtmpt.RTMPTHandler" autowire="byType">
         <property name="codecFactory" ref="rtmptCodecFactory" />
     </bean>
-    
+
     <!-- Use injection to store RTMPT handler in servlet -->
     <bean id="rtmptServlet" class="org.red5.server.net.rtmpt.RTMPTServlet">
         <property name="manager" ref="rtmpConnManager" />
@@ -155,15 +155,15 @@
         <property name="ident2" value="127.0.0.1" />
         -->
     </bean>
-    
+
     <!-- RTMPT Connection -->
     <bean id="rtmptConnection" scope="prototype" class="org.red5.server.net.rtmpt.RTMPTConnection">
         <!-- Executor for scheduled tasks -->
         <property name="scheduler" ref="rtmpScheduler" />
-<!--
-        <property name="executor" ref="messageExecutor" />
-        <property name="deadlockGuardScheduler" ref="deadlockGuardScheduler" />
--->
+        <!--
+                <property name="executor" ref="messageExecutor" />
+                <property name="deadlockGuardScheduler" ref="deadlockGuardScheduler" />
+        -->
         <!-- Ping clients every X ms. Set to 0 to disable ghost detection code. -->
         <property name="pingInterval" value="${rtmpt.ping_interval}" />
         <!-- Disconnect client after X ms of not responding. -->
@@ -190,7 +190,7 @@
         <property name="reservedStreamsInitalCapacity" value="${rtmp.reserved.streams.initial.capacity}" />
         <property name="reservedStreamsConcurrencyLevel" value="${rtmp.reserved.streams.concurrency.level}" />
     </bean>
-    
+
     <!-- RTMPS -->
     <!-- Notes to self: 
          https://www.openssl.org/docs/apps/ciphers.html#TLS-v1.2-cipher-suites 
